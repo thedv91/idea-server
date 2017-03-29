@@ -1,9 +1,9 @@
 {
-    "name": "apidoc-hospital",
+    "name": "apidoc-idea",
     "version": "1.0.0",
-    "description": "Hospital docs",
+    "description": "idea docs",
     "title": "Custom apiDoc browser title",
-    "url": "http://example.com",
+    "url": "http://45.76.66.168:8081",
     "header": {
         "filename": "header.md"
     },

@@ -7,10 +7,11 @@ const Router = Express.Router();
 
 Router.route('/')
     .post(AuthPolicy.requireLogin, Product.create)
-    .get(AuthPolicy.requireLogin, Product.list);
+    .delete(AuthPolicy.requireLogin, Product.removeList)
+    .get(Product.list);
 
 Router.route('/:productCode')
-    .get(AuthPolicy.requireLogin, Product.read);
+    .get(Product.read);
 
 Router.param('productCode', Product.getProductByCode);
 

@@ -1,5 +1,5 @@
 import Express, { Router } from 'express';
-import Upload from './../controllers/Upload';
+import { Upload } from './../controllers';
 import { AuthPolicy } from './../policies';
 
 const router = Router();

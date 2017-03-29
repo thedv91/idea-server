@@ -11,3 +11,4 @@ npm-debug.log
 /static/uploads/*
 /**/*.log
 /yarn.lock
+/static/doc

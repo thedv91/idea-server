@@ -13,14 +13,13 @@ import path from 'path';
 import bluebird from 'bluebird';
 
 //=== import internal ===
-import { Database, App as AppConfig, Jwt as JwtConfig, OauthModel } from './configs';
+import { Database, App as AppConfig, Jwt as JwtConfig } from './configs';
 import Policies from './policies';
 import Routes from './routes';
 import * as Models from './models';
 
 import { seed } from './setup';
 
-// const oauth = new OauthServer({ model: OauthModel });
 
 const app = Express();
 const expressRouter = Express.Router();
@@ -40,7 +39,7 @@ app.set('view engine', 'ejs');
 
 // Enable cors
 app.use(cors());
-// app.use(oauth.authenticate());
+
 app.use(Express.static('static'));
 app.use(Express.static('dist'));
 
@@ -107,9 +106,7 @@ app.use((err, req, res, next) => {
 
 // Init router
 app.use('/api/v1', expressRouter.use('/auth', Routes.Auth));
-app.use('/api/v1', expressRouter.use('/patient', Routes.Patient));
 app.use('/api/v1', expressRouter.use('/upload', Routes.Upload));
-app.use('/api/v1', expressRouter.use('/clients', Routes.Client));
 app.use('/api/v1', expressRouter.use('/product', Routes.Product));
 
 app.get('/', (req, res) => {

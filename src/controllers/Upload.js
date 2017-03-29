@@ -1,6 +1,9 @@
 import multer from 'multer';
-import { Upload } from './../Configs';
-let myUpload = multer({ dest: Upload.profile.dest }).single('avatar');
+import { Upload } from './../configs';
+import { Media } from './../models';
+import { getErrorMessage } from './Error';
+
+let myUpload = multer({ dest: Upload.image.dest }).single('image');
 
 class UploadController {
 
@@ -8,20 +11,35 @@ class UploadController {
      * @api {post} /api/v1/upload Upload image
      * @apiGroup Media
      * @apiPermission auth
-     * @apiParam {File} avatar Image file
+     * @apiParam {File} image Image file
      * @apiSuccess {String} url Image url
      * @apiVersion 1.0.0
      */
     upload(req, res) {
-        myUpload(req, res, function (err) {
+
+        myUpload(req, res, (err) => {
             if (err) {
                 // An error occurred when uploading
                 return res.status(400).send(err);
             }
-            const app_url = process.env.APP_URL || '';
-            const url = `${app_url + Upload.profile.link + req.file.filename}`;
-            return res.json({ url: url })
-        })
+
+            const name = req.file.originalname;
+
+            const path = `${Upload.image.link + req.file.filename}`;
+
+            const media = new Media({
+                path: path,
+                name: name,
+                userId: req.auth.id
+            });
+            media.save().then(response => {
+                return res.json({ url: path });
+            }, error => {
+                return res.status(400).send({
+                    message: getErrorMessage(error)
+                });
+            });
+        });
     }
 }
 

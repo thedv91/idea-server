@@ -1,5 +1,5 @@
 export default {
-    profile: {
+    image: {
         dest: 'static/uploads/',
         link: '/uploads/'
     }

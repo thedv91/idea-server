@@ -44,7 +44,7 @@ class AuthController {
     }
 
     /**
-     * @api {post} /api/v1/auth Register user
+     * @api {post} /api/v1/auth/register Register user
      * @apiGroup Auth
      * @apiVersion 1.0.0
      * @apiParam {String} email Email
@@ -54,7 +54,7 @@ class AuthController {
      * @apiParam {String} [gender]
      * @apiParam {Date} [brithday]
      *
-     * @apiSuccess {String} accessToken token of the User.
+     * @apiSuccess {String} token token of the User.
      * @apiSuccess {Json} user  User profile.
      * @apiSuccess {String}  user.email
      * @apiSuccess {String}  user.username
@@ -104,7 +104,7 @@ class AuthController {
                         return res.status(400).send(err);
                     }
                     return res.json({
-                        accessToken: token,
+                        token: token,
                         user: doc
                     });
 

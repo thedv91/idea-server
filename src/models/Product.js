@@ -1,6 +1,8 @@
 import mongoose, { Schema } from 'mongoose';
 import async from 'async';
 import validator from 'validator';
+import fs from 'fs';
+
 
 const ProductSchema = new Schema({
     code: {
@@ -29,11 +31,23 @@ const ProductSchema = new Schema({
         required: true
     },
     description: String,
-    image: String
+    image: String,
+    price: Number,
+    total: Number,
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    }
 
 }, {
         timestamps: true
     });
+
+
+ProductSchema.post('remove', function (doc) {
+    fs.unlink(doc.image);
+});
 
 
 

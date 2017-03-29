@@ -10,13 +10,12 @@ const UserSchema = new Schema({
     username: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        min: [5, 'Too short'],
     },
     salt: String,
     password: {
-        type: String,
-        required: [true, 'Why no type?'],
-        min: [6, 'Too short'],
+        type: String
     },
     fullname: String,
     gender: String,

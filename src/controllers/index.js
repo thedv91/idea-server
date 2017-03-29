@@ -1,9 +1,9 @@
 import Auth from './Auth';
-import Patient from './Patient';
 import * as Product from './Product';
+import Upload from './Upload';
 
 export {
     Auth,
-    Patient,
-    Product
+    Product,
+    Upload
 }
