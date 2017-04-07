@@ -4,7 +4,7 @@ import validator from 'validator';
 import fs from 'fs';
 
 
-const ProductSchema = new Schema({
+const RepositorySchema = new Schema({
     code: {
         type: String,
         required: true,
@@ -13,8 +13,8 @@ const ProductSchema = new Schema({
             isAsync: true,
             validator: function (v, cb) {
                 const self = this;
-                const Product = self.model('Product');
-                Product.findOne({
+                const Repository = self.model('Repository');
+                Repository.findOne({
                     code: v,
                     _id: { '$ne': self._id }
                 }).then(doc => {
@@ -30,29 +30,21 @@ const ProductSchema = new Schema({
         type: String,
         required: true
     },
-    description: String,
-    image: String,
-    price: Number,
-    total: Number,
-    userId: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
-    },
-    repositoryId: {
-        type: Schema.Types.ObjectId,
-        ref: 'Repository'
-    }
+    description: String
 
 }, {
         timestamps: true
     });
 
 
-ProductSchema.post('remove', function (doc) {
+RepositorySchema.post('remove', function (doc) {
     fs.unlink(doc.image);
 });
 
 
+RepositorySchema.methods.getProducts = function () {
+    return this.model('Product').find({ repositoryId: this._id });
+};
 
-export default mongoose.model('Product', ProductSchema);
+
+export default mongoose.model('Repository', RepositorySchema);

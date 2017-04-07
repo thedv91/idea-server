@@ -6,9 +6,9 @@
     "jsnext:main": "src/index.js",
     "scripts": {
         "babel-node": "babel-node --presets=es2015",
-        "start": "nodemon --ignore tests/ --exec npm run babel-node -- server.js",
-        "build": "babel --presets=es2015 src -d build",
-        "prod": "babel-node server.js",
+        "start": "./node_modules/.bin/nodemon --ignore tests/ --exec npm run babel-node -- server.dev.js",
+        "build": "babel ./src -s inline -d ./build --presets=es2015 --minified --compact=auto",
+        "prod": "node server.js",
         "test": "mocha --compilers js:babel-core/register",
         "doc": "apidoc -i src/ -o static/doc/"
     },

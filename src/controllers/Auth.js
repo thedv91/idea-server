@@ -22,10 +22,10 @@ class AuthController {
      * @apiSuccess {Date}  [brithday]
      * @apiVersion 1.0.0
      * @apiHeader {String} Authorization Accesstoken for user.
-     * @apiHeaderExample {json} Header-Example:
-     *     {
-     *       "Authorization": "Bearer token-here"
-     *     }
+     * @apiHeaderExample {Object} Header-Example:
+          {
+            "Authorization": "Bearer token-here"
+          }
      */
     me(req, res) {
         if (!req.auth)

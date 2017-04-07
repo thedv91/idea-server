@@ -108,6 +108,7 @@ app.use((err, req, res, next) => {
 app.use('/api/v1', expressRouter.use('/auth', Routes.Auth));
 app.use('/api/v1', expressRouter.use('/upload', Routes.Upload));
 app.use('/api/v1', expressRouter.use('/product', Routes.Product));
+app.use('/api/v1', expressRouter.use('/repository', Routes.Repository));
 
 app.get('/', (req, res) => {
     // ejs.renderFile('./views/index.ejs', function (err, str) {

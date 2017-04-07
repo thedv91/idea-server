@@ -1,6 +1,3 @@
-var dotenv = require('dotenv');
-require('babel-register')({
-    presets: ['es2015']
-});
+const dotenv = require('dotenv');
 dotenv.config();
-require('./src/index');
+require('./build/index');

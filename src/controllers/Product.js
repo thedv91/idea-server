@@ -25,50 +25,6 @@ export function list(req, res) {
         });
     });
 }
-// export function list(req, res) {
-//     let query = {};
-//     if (req.query.filterVal) {
-//         switch (req.query.filterType) {
-//             case 'code':
-//                 query.code = new RegExp(req.query.filterVal, 'i');
-//                 break;
-
-//             case 'name':
-//                 query.name = new RegExp(req.query.filterVal, 'i');
-//                 break;
-
-//             default:
-//                 query.$or = [
-//                     {
-//                         name: {
-//                             $regex: req.query.filterVal,
-//                             $options: 'i'
-//                         }
-//                     },
-//                     {
-//                         code: {
-//                             $regex: req.query.filterVal,
-//                             $options: 'i'
-//                         }
-//                     }
-//                 ];
-//                 break;
-//         }
-//     }
-//     req.sanitizeQuery('limit').toInt();
-//     req.sanitizeQuery('page').toInt();
-//     const sort = req.query.sort || {};
-//     const limit = req.query.limit || 20;
-//     const page = req.query.page || 1;
-//     Product.paginate(query, { page: page, limit: limit }).then(response => {
-//         return res.json(response);
-//     }, error => {
-//         return res.status(400).send({
-//             message: getErrorMessage(error)
-//         });
-//     });
-// }
-
 
 /**
  * @api {post} /api/v1/product Create product
@@ -79,6 +35,7 @@ export function list(req, res) {
  * @apiParam {Number} price Product price
  * @apiParam {Number} total Product quantity
  * @apiParam {String} image Product image
+ * @apiParam {ObjectID} repositoryId Repository ID
  *
  * @apiSuccess {ObjectId} _id
  * @apiSuccess {String} code Product Code
@@ -87,6 +44,13 @@ export function list(req, res) {
  * @apiSuccess {Number} total Product quantity
  * @apiSuccess {String} image Product image
  * @apiVersion 1.0.0
+ *
+ * @apiHeader {String} Authorization Accesstoken for user.
+ * @apiHeaderExample {Object} Header-Example:
+    {
+        "Authorization": "Bearer token-here"
+    }
+ *
  */
 export function create(req, res) {
     let product = new Product(req.body);
@@ -158,6 +122,7 @@ export function read(req, res) {
  * @apiParam {Number} [price] Product price
  * @apiParam {Number} [total] Product quantity
  * @apiParam {String} [image] Product image
+ * @apiParam {ObjectID} repositoryId Repository ID
  *
  * @apiSuccess {ObjectId} _id
  * @apiSuccess {String} code Product Code
@@ -166,14 +131,21 @@ export function read(req, res) {
  * @apiSuccess {Number} total Product quantity
  * @apiSuccess {String} image Product image
  * @apiVersion 1.0.0
+ *
+ * @apiHeader {String} Authorization Accesstoken for user.
+ * @apiHeaderExample {Object} Header-Example:
+    {
+        "Authorization": "Bearer token-here"
+    }
+ *
  */
 export function update(req, res) {
     delete req.body._id;
     delete req.body.code;
     let product = req.product;
-
-    product.set(req.body);
-
+    let updateData = _.omitBy(req.body, _.isEmpty);
+    product = Object.assign({}, product, updateData);
+    product.userId = req.auth.id;
     product.validate((err) => {
         if (err) {
             const messages = generateErrors(err.errors);
@@ -206,15 +178,16 @@ export function removeList(req, res) {
 
 export function getProductByCode(req, res, next, code) {
 
-    Product.findOne({ code: code }).then(data => {
-        if (!data) {
-            return res.status(400).send({
-                message: 'No Product with that identifier has been found'
-            });
-        }
-        req.product = data;
-        return next();
-    }, err => {
-        return next(err);
-    });
+    Product.findOne({ code: code })
+        .populate('repositoryId').then(data => {
+            if (!data) {
+                return res.status(400).send({
+                    message: 'No Product with that identifier has been found'
+                });
+            }
+            req.product = data;
+            return next();
+        }, err => {
+            return next(err);
+        });
 }

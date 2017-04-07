@@ -11,6 +11,7 @@ Router.route('/')
     .get(Product.list);
 
 Router.route('/:productCode')
+    .put(AuthPolicy.requireLogin, Product.update)
     .get(Product.read);
 
 Router.param('productCode', Product.getProductByCode);
