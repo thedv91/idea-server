@@ -21,3 +21,10 @@
 ```shell
     yarn doc
 ```
+
+```bash
+docker run --name idea-dev -v "$PWD":/usr/src/app --link mongo:mongo -w /usr/src/app -p 8081:8081 node:6.10.2-alpine node server.js
+```
+
+
+docker-compose -f docker-compose-dev.yml up

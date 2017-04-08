@@ -2,7 +2,7 @@ import bluebird from 'bluebird';
 
 export default {
     db: {
-        uri: 'mongodb://localhost:27017/' + process.env.DB_NAME || 'offshore',
+        uri: process.env.MONGO_URL || 'mongodb://localhost:27017/' + (process.env.DB_NAME || 'idea-dev'),
         options: {
             promiseLibrary: bluebird
         }

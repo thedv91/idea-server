@@ -1,0 +1,19 @@
+version: '2'
+services:
+  web:
+    build: .
+    dockerfile: Dockerfile-development
+    ports:
+    - "8000:8000"
+    volumes:
+    - .:/usr/src/app/
+    links:
+    - db
+    environment:
+      NODE_ENV: development
+      PORT: 8000
+      MONGO_URL: mongodb://db:27017/idea-dev
+  db:
+    image: mongo:latest
+    ports:
+    - "27017:27017"
