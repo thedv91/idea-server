@@ -50,7 +50,11 @@ const ProductSchema = new Schema({
 
 
 ProductSchema.post('remove', function (doc) {
-    fs.unlink(doc.image);
+
+    if (fs.existsSync(doc.image)) {
+        fs.unlink(doc.image);
+    }
+
 });
 
 

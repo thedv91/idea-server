@@ -11,8 +11,14 @@ Router.route('/')
     .get(Repository.list);
 
 Router.route('/:repositoryCode')
+    .delete(AuthPolicy.requireLogin, Repository.remove)
     .put(AuthPolicy.requireLogin, Repository.update)
     .get(Repository.read);
+
+Router.route('/:repositoryCode/product')
+    .post(Repository.addProduct);
+
+
 
 Router.param('repositoryCode', Repository.getByCode);
 

@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import validator from 'validator';
 import _ from 'lodash';
 
-import { Repository } from './../models';
+import { Repository, Product } from './../models';
 import { getErrorMessage, generateErrors } from './Error';
 
 
@@ -200,5 +200,51 @@ export function getByCode(req, res, next, code) {
         return next();
     }, err => {
         return next(err);
+    });
+}
+
+/**
+ *
+ * @api {post} /api/v1/repository/:repositoryCode/product Create product
+ * @apiName apiName
+ * @apiGroup Repository
+ * @apiVersion  1.0.0
+ *
+ *
+ * @apiParam {String} repositoryCode description
+ * @apiParam {String} code Product Code
+ * @apiParam {String} name Product name
+ * @apiParam {Number} price Product price
+ * @apiParam {Number} total Product quantity
+ * @apiParam {String} image Product image
+ *
+ * @apiHeader {String} Authorization Accesstoken for user.
+ * @apiHeaderExample {Object} Header-Example:
+    {
+        "Authorization": "Bearer token-here"
+    }
+ *
+ *
+ */
+export function addProduct(req, res) {
+    let product = new Product(req.body);
+    product.userId = req.auth.id;
+    product.repositoryId = req.repository;
+
+    product.validate((err) => {
+        if (err) {
+            const messages = generateErrors(err.errors);
+            return res.status(400).send({
+                validate: messages
+            });
+        }
+
+        product.save().then(data => {
+            return res.json(data);
+        }, err => {
+            return res.status(400).send({
+                message: getErrorMessage(err)
+            });
+        });
     });
 }

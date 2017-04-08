@@ -41,7 +41,7 @@ app.set('view engine', 'ejs');
 app.use(cors());
 
 app.use(Express.static('static'));
-app.use(Express.static('dist'));
+app.use(Express.static('static/dist'));
 
 //Write log request
 app.use(morgan('combined', AppConfig.logs));
@@ -114,7 +114,7 @@ app.get('/', (req, res) => {
     // ejs.renderFile('./views/index.ejs', function (err, str) {
     //     res.send(str);
     // });
-    res.sendFile(path.join(process.env.PWD, '/src/views/index.html'));
+    res.sendFile(path.join(process.cwd(), '/static/dist/index.html'));
 });
 
 //=== start server ===

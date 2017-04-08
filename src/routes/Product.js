@@ -11,6 +11,7 @@ Router.route('/')
     .get(Product.list);
 
 Router.route('/:productCode')
+    .delete(AuthPolicy.requireLogin, Product.remove)
     .put(AuthPolicy.requireLogin, Product.update)
     .get(Product.read);
 

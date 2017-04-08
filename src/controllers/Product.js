@@ -17,7 +17,7 @@ import { getErrorMessage, generateErrors } from './Error';
  */
 export function list(req, res) {
 
-    Product.find().then(response => {
+    Product.find().populate('repositoryId').then(response => {
         return res.json(response);
     }, error => {
         return res.status(400).send({
@@ -144,7 +144,7 @@ export function update(req, res) {
     delete req.body.code;
     let product = req.product;
     let updateData = _.omitBy(req.body, _.isEmpty);
-    product = Object.assign({}, product, updateData);
+    product.set(updateData);
     product.userId = req.auth.id;
     product.validate((err) => {
         if (err) {
