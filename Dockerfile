@@ -16,6 +16,7 @@ RUN yarn install
 COPY . /usr/src/app
 
 ENV NODE_ENV production
+ENV MONGO_URL mongodb://db:27017/idea-prod
 
 EXPOSE 8000
 CMD [ "node", "server.js" ]

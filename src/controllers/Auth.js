@@ -43,6 +43,7 @@ class AuthController {
 
     }
 
+
     /**
      * @api {post} /api/v1/auth/register Register user
      * @apiGroup Auth

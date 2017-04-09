@@ -9,13 +9,13 @@ WORKDIR /usr/src/app
 # RUN npm install pm2 -g
 
 # Install app dependencies
-COPY package.json yarn.lock /usr/src/app/
+ADD package.json yarn.lock /usr/src/app/
 RUN yarn install
 
 # Bundle app source
-COPY . /usr/src/app
+ADD . /usr/src/app
 
 ENV NODE_ENV development
 
 EXPOSE 8000
-CMD [ "node", "server.js" ]
+CMD [ "yarn", "start" ]
